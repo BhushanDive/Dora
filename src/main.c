@@ -1,12 +1,32 @@
-#include<stdio.h>
+#include <stdio.h>
 #include<conio.h>
+#include <dirent.h>
 
-
-int main ()
+int main()
 {
-    printf_s("Dora intends to be a modern open source windows File Explorer with much needed features");
+    DIR *folder;
+    struct dirent *entry;
+    int files = 0;
+
+    folder = opendir(".");
+    if(folder == NULL)
+    {
+        perror("Unable to read directory");
+        return(1);
+    }
+
+    while( (entry=readdir(folder)) )
+    {
+        files++;
+        printf("File %3d: %s\n",
+                files,
+                entry->d_name
+              );
+    }
+
+    closedir(folder);
 
     getch();
-    
-    return 0;
+
+    return(0);
 }
